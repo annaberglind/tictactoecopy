@@ -4,11 +4,6 @@ import java.util.Scanner;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.http.*;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.*;
 
 import static spark.Spark.*;
 import spark.*;
@@ -39,6 +34,13 @@ public class TicTacToe {
         }
         return false;
     }
+
+    // initialize player
+    public void initializePlayer()
+    {
+        player = 1;
+    }
+
 
     // Checks if there is a winner in a row
 
@@ -162,12 +164,17 @@ public class TicTacToe {
                 Integer gridId = Integer.valueOf(request.queryParams("gridId"));
                 tictactoe.x = gridId;
                 if(!tictactoe.checkIfValidInput()){
-                    return 0;
+                    return "0";
                 }
                 else{
                     tictactoe.insert();
                     tictactoe.changePlayer();
-                    return tictactoe.player; 
+                    if ( tictactoe.player == 2 ){
+                        return "X";
+                    }
+                    else {
+                        return "Y";
+                    }
                 }
             }
         });
@@ -182,13 +189,18 @@ public class TicTacToe {
                 if(tictactoe.checkForWin()){
                     tictactoe.initializedGrid();
                     if(tictactoe.player == 1){
+                        // player y wins
+                        tictactoe.initializePlayer();
                         return "player2";
                     }
                     else{
+                        // player x wins
+                        tictactoe.initializePlayer();
                         return "player1";
                     }
                 }
                 else if(tictactoe.checkForTie()){
+                    tictactoe.initializePlayer();
                     tictactoe.initializedGrid();
                     return "Tie";
                 }

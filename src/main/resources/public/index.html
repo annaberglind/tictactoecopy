@@ -84,7 +84,7 @@
   <script>
    $(document).ready(function(){
 
-    $('.btn').click(function(){
+    $('.btn').click(function(event){
         var form = $('form');
         var x = this;
         x.disabled = true;
@@ -94,13 +94,10 @@
           data: 'gridId=' + this.id
           }).done(function(ret) 
           {
-            if(ret == 0){
-              return;
-            }
-            else if(ret == 2){
+            if(ret === "X"){
               $(x).val('X');
             }
-            else{
+            else if(ret === "Y"){
               $(x).val('Y');
             }
           }).fail(function() {
@@ -114,24 +111,23 @@
           data: 'gridId=' + this.id
           }).done(function(ret) 
           {
-            if(ret == "player1"){
-              alert("Player one WIN!!!!");
-              window.location.reload();
+            if(ret === "player1"){
+              alert("Player one WINS!!!!");
+              location.reload(true);
             }
-            if(ret == "player2"){
+            if(ret === "player2"){
               alert("Player two WINS!!!!");
-              window.location.reload();
+              location.reload(true);
             }
-            if (ret == "Tie"){
-              alert("We have a TIE!!!");
-              window.location.reload();
+            if (ret === "Tie"){
+              alert("We have a TIE!!!!");
+              location.reload(true);
             }
 
           }).fail(function() {
               alert("Error");
           });
           event.preventDefault();
-
     });
   });
   </script>
