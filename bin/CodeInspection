@@ -1,0 +1,4 @@
+mvn clean
+mvn package
+mvn findbugs:check
+mvn site

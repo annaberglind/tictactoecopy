@@ -1,0 +1,9 @@
+#!/bin/bash
+
+mvn clean
+mvn package
+mvn findbugs:check
+mvn site
+
+export PORT=4567
+java -jar target/TicTacToe-1.0-SNAPSHOT-jar-with-dependencies.jar

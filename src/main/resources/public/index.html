@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>TicTacToe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- load bootstrap for nicer ui -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+
+   <style type="text/css">
+        td
+        {
+          text-align : center; 
+          vertical-align : middle;
+        }
+        h1
+        {
+          text-align: center;
+        }
+        form-inline
+        {
+          padding-left: 500px;
+          padding-top: 50px;
+        }
+        table
+        {
+          padding-left: 450px;
+          width: 300px;
+          height: 300px;
+        }
+        form
+        {
+          padding-left: 450px;
+          padding-top: 30px;
+        }
+        p 
+        {
+          text-align: center;
+          padding-top: 20px;
+        }
+        .btn
+        {
+          width: 100px;
+          height:100px;
+        }
+        input[type="button"]
+        {
+          font-size: 50px;
+        }
+    </style>
+  </head>
+
+  <body>
+  
+  <div class="container">
+    <h1> This is the awesome game TicTacToe</h1>
+
+    <form method="post" action="/add" class="form-inline" role="form">
+    <table border="1" width="100">
+      <tr>
+        <td><input type = "button" class="btn" id="0" value="-"/></td>
+        <td><input type = "button" class="btn" id="1" value="-"/></td>
+        <td><input type = "button" class="btn" id="2" value="-"/></td>
+      </tr>
+      <tr>
+        <td><input type = "button" class="btn" id="3" value="-"/></td>
+        <td><input type = "button" class="btn" id="4" value="-"/></td>
+        <td><input type = "button" class="btn" id="5" value="-"/></td>
+      </tr>
+      <tr>
+        <td><input type = "button" class="btn" id="6" value="-"/></td>
+        <td><input type = "button" class="btn" id="7" value="-"/></td>
+        <td><input type = "button" class="btn" id="8" value="-"/></td>
+      </tr>
+    </table>
+  </form>
+    <p>This is the game's table</p>
+    <div id="results"></div>
+  </div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+  <script>
+   $(document).ready(function(){
+
+    $('.btn').click(function(){
+        var form = $('form');
+        var x = this;
+        x.disabled = true;
+      $.ajax({
+          type: form.attr('method'),
+          url: form.attr('action'),
+          data: 'gridId=' + this.id
+          }).done(function(ret) 
+          {
+            if(ret == 0){
+              return;
+            }
+            else if(ret == 2){
+              $(x).val('X');
+            }
+            else{
+              $(x).val('Y');
+            }
+          }).fail(function() {
+              alert("Error");
+          });
+          event.preventDefault();
+
+       $.ajax({
+          type: "post",
+          url: "/win",
+          data: 'gridId=' + this.id
+          }).done(function(ret) 
+          {
+            if(ret == "player1"){
+              alert("Player one WINS!!!!");
+              window.location.reload();
+            }
+            if(ret == "player2"){
+              alert("Player two WINS!!!!");
+              window.location.reload();
+            }
+            if (ret == "Tie"){
+              alert("We have a TIE!!!!");
+              window.location.reload();
+            }
+
+          }).fail(function() {
+              alert("Error");
+          });
+          event.preventDefault();
+
+    });
+  });
+  </script>
+  </body>
+</html>
